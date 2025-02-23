@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>English Personality Test | 英语人格测试</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        .question-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 15px 0;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #007bff;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 18px;
+            display: block;
+            margin: 20px auto;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        #result {
+            display: none;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .emoji { font-size: 28px; }
+        h1 { text-align: center; color: #2c3e50; }
+        label { display: block; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>📚 English Personality Test<br>英语人格测试</h1>
+
+    <div id="quiz">
+        <!-- 题目自动生成 -->
+    </div>
+
+    <button onclick="showResult()">Show My Result 查看结果</button>
+
+    <div id="result"></div>
+
+    <script>
+        // 完整10道题库
+        const questions = [
+            {
+                q: "1. When working on a project, you prefer to...",
+                options: [
+                    {text:"Lead the team 🦁", type:"A"},
+                    {text:"Brainstorm ideas 🐬", type:"B"},
+                    {text:"Analyze data 🦉", type:"C"},
+                    {text:"Support others 🐼", type:"D"}
+                ]
+            },
+            {
+                q: "2. Your ideal weekend is...",
+                options: [
+                    {text:"Outdoor adventures 🌄", type:"A"},
+                    {text:"Parties with friends 🎉", type:"B"},
+                    {text:"Reading books 📚", type:"C"},
+                    {text:"Relaxing at home 🛋️", type:"D"}
+                ]
+            },
+            {
+                q: "3. When facing a problem, you...",
+                options: [
+                    {text:"Take immediate action ⚡", type:"A"},
+                    {text:"Discuss with others 💬", type:"B"},
+                    {text:"Research solutions 🔍", type:"C"},
+                    {text:"Wait and observe 🌊", type:"D"}
+                ]
+            },
+            {
+                q: "4. Your learning style is...",
+                options: [
+                    {text:"Hands-on practice ✋", type:"A"},
+                    {text:"Group discussions 👥", type:"B"},
+                    {text:"Detailed notes 📝", type:"C"},
+                    {text:"Quiet reflection 🧘", type:"D"}
+                ]
+            },
+            {
+                q: "5. Friends describe you as...",
+                options: [
+                    {text:"Confident 😎", type:"A"},
+                    {text:"Enthusiastic 😄", type:"B"},
+                    {text:"Thoughtful 🤔", type:"C"},
+                    {text:"Reliable 🤝", type:"D"}
+                ]
+            },
+            {
+                q: "6. Your greatest strength is...",
+                options: [
+                    {text:"Decision-making 🎯", type:"A"},
+                    {text:"Creativity 🎨", type:"B"},
+                    {text:"Analytical skills 📊", type:"C"},
+                    {text:"Patience ⏳", type:"D"}
+                ]
+            },
+            {
+                q: "7. In social situations, you...",
+                options: [
+                    {text:"Take initiative 🗣️", type:"A"},
+                    {text:"Make jokes 😂", type:"B"},
+                    {text:"Listen carefully 👂", type:"C"},
+                    {text:"Stay in the background 🙇", type:"D"}
+                ]
+            },
+            {
+                q: "8. What motivates you most?",
+                options: [
+                    {text:"Challenges 🏆", type:"A"},
+                    {text:"Social recognition 👍", type:"B"},
+                    {text:"Knowledge growth 🌱", type:"C"},
+                    {text:"Team harmony ☯️", type:"D"}
+                ]
+            },
+            {
+                q: "9. Choose a superpower:",
+                options: [
+                    {text:"Leadership 👑", type:"A"},
+                    {text:"Social charm 💃", type:"B"},
+                    {text:"Future prediction 🔮", type:"C"},
+                    {text:"Healing energy 💖", type:"D"}
+                ]
+            },
+            {
+                q: "10. Your favorite quote is:",
+                options: [
+                    {text:"\"Lead, follow, or get out of the way.\"", type:"A"},
+                    {text:"\"Laughter is the best medicine.\"", type:"B"},
+                    {text:"\"Knowledge is power.\"", type:"C"},
+                    {text:"\"Go with the flow.\"", type:"D"}
+                ]
+            }
+        ];
+
+        // 生成题目
+        let quizHTML = '';
+        questions.forEach((q, index) => {
+            quizHTML += `<div class="question-card">
+                <p>${q.q}</p >`;
+            q.options.forEach(opt => {
+                quizHTML += `<label>
+                    <input type="radio" name="q${index}" value="${opt.type}" required>
+                    ${opt.text}
+                </label>`;
+            });
+            quizHTML += `</div>`;
+        });
+        document.getElementById('quiz').innerHTML = quizHTML;
+
+        // 结果配置
+        const results = {
+            A: {
+                emoji: "🦁",
+                en: "<b>Leadership Lion</b><br>You naturally take charge and inspire others to achieve goals.",
+                cn: "<b>领导型狮子</b><br>你天生具有领导力，善于激励团队达成目标"
+            },
+            B: {
+                emoji: "🐬",
+                en: "<b>Creative Dolphin</b><br>Your innovative ideas bring energy to any group.",
+                cn: "<b>创意型海豚</b><br>你的创新思维能为团队注入活力"
+            },
+            C: {
+                emoji: "🦉",
+                en: "<b>Analytical Owl</b><br>Your logical approach solves complex problems effectively.",
+                cn: "<b>分析型猫头鹰</b><br>你的逻辑思维能有效解决复杂问题"
+            },
+            D: {
+                emoji: "🐼",
+                en: "<b>Supportive Panda</b><br>You create harmony and ensure everyone feels included.",
+                cn: "<b>支持型熊猫</b><br>你擅长营造和谐氛围，照顾团队成员感受"
+            }
+        };
+
+        function showResult() {
+            let counts = {A:0, B:0, C:0, D:0};
+            
+            questions.forEach((q, index) => {
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                if(selected) counts[selected.value]++;
+            });
+
+            let maxType = Object.entries(counts).sort((a,b)=>b[1]-a[1])[0][0];
+            
+            document.getElementById('result').innerHTML = `
+                <div class="emoji">${results[maxType].emoji.repeat(5)}</div>
+                <h2>English Result</h2>
+                <p>${results[maxType].en}</p >
+                <h2>中文结果</h2>
+                <p>${results[maxType].cn}</p >
+                <button onclick="location.reload()">Retest 重新测试</button>
+            `;
+            document.getElementById('result').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
